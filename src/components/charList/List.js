@@ -1,9 +1,8 @@
-const List = ({ arr, onCharSelected }) => {
-	const focusRefs = [];
+import { useRef } from 'react';
 
-	const createRef = (ref) => {
-		focusRefs.push(ref);
-	};
+const List = ({ arr, onCharSelected }) => {
+	const focusRefs = useRef([]);
+
 	const onItemFocus = (arr, i) => {
 		arr.forEach((item) => item.classList.remove('char__item_selected'));
 		arr[i].classList.add('char__item_selected');
@@ -15,16 +14,16 @@ const List = ({ arr, onCharSelected }) => {
 			<li
 				className="char__item"
 				tabIndex={0}
-				ref={createRef}
+				ref={(e) => (focusRefs.current[i] = e)}
 				key={item.id}
 				onClick={() => {
 					onCharSelected(item.id);
-					onItemFocus(focusRefs, i);
+					onItemFocus(focusRefs.current, i);
 				}}
 				onKeyPress={(e) => {
 					if (e.key === ' ' || e.key === 'Enter') {
-						this.props.onCharSelected(item.id);
-						this.onItemFocus(focusRefs, i);
+						onCharSelected(item.id);
+						onItemFocus(focusRefs.current, i);
 					}
 				}}>
 				<img src={item.thumbnail} alt="Character's name" style={imgNotAvailabe} />
