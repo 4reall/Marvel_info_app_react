@@ -4,16 +4,15 @@ import PropTypes from 'prop-types';
 import Skeleton from '../skeleton/Skeleton';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import MarvelServices from '../../services/marvelServices';
+import { useMarvelServices } from '../../services/marvelServices';
 
 import './charInfo.scss';
+import { Link } from 'react-router-dom';
 
 const CharInfo = ({ charId }) => {
 	const [char, setChar] = useState(null);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(false);
 
-	const marvelServices = new MarvelServices();
+	const { loading, error, getCharacter, clearError } = useMarvelServices();
 
 	useEffect(() => {
 		updateChar();
@@ -23,27 +22,16 @@ const CharInfo = ({ charId }) => {
 		updateChar();
 	}, [charId]);
 
-	const onError = () => {
-		setLoading(false);
-		setError(true);
-	};
-
 	const onCharLoaded = (char) => {
 		setChar(char);
-		setLoading(false);
-		setError(false);
-	};
-
-	const onCharLoading = () => {
-		setLoading(true);
 	};
 
 	const updateChar = () => {
 		if (!charId) {
 			return;
 		}
-		onCharLoading();
-		marvelServices.getCharacter(charId).then(onCharLoaded).catch(onError);
+		clearError();
+		getCharacter(charId).then(onCharLoaded);
 	};
 
 	const skeleton = !(char || error || loading) ? <Skeleton /> : null;
@@ -85,7 +73,7 @@ const View = ({ char }) => {
 				{comicsItems.map((item, i) => {
 					return (
 						<li key={i} className="char__comics-item">
-							{item.name}
+							<Link to={`comics/${item.resourceURI.match(/\d{3,}/)}`}>{item.name}</Link>
 						</li>
 					);
 				})}

@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react';
+import { useMarvelServices } from '../../services/marvelServices';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import MarvelServices from '../../services/marvelServices';
 
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
 
 const RandomChar = () => {
 	const [char, setChar] = useState({});
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(false);
-
-	const marvelServices = new MarvelServices();
+	const { loading, error, getCharacter, clearError } = useMarvelServices();
 
 	useEffect(() => {
 		updateChar();
@@ -22,29 +19,17 @@ const RandomChar = () => {
 		// };
 	}, []);
 
-	const onError = () => {
-		setLoading(false);
-		setError(true);
-	};
-
 	const onCharLoaded = (char) => {
 		setChar(char);
-		setLoading(false);
-		setError(false);
-	};
-
-	const onCharLoading = () => {
-		setLoading(true);
 	};
 
 	const updateChar = () => {
+		clearError();
 		const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-		onCharLoading();
-		marvelServices.getCharacter(id).then(onCharLoaded).catch(onError);
+		getCharacter(id).then(onCharLoaded);
 	};
 
 	const handleClick = () => {
-		onCharLoading();
 		updateChar();
 	};
 
@@ -75,10 +60,13 @@ const RandomChar = () => {
 
 const RandomCharBlock = ({ char }) => {
 	const { thumbnail, name, description, homepage, wiki } = char;
-	const imgNotAvailabe = thumbnail.match('image_not_available.jpg') ? { objectFit: 'contain' } : null;
+	const imgSytle =
+		thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'
+			? { objectFit: 'contain' }
+			: { objectFit: 'cover' };
 	return (
 		<div className="randomchar__block">
-			<img src={thumbnail} alt="Random character" className="randomchar__img" style={imgNotAvailabe} />
+			<img src={thumbnail} alt="Random character" className="randomchar__img" style={imgSytle} />
 			<div className="randomchar__info">
 				<p className="randomchar__name">{name}</p>
 				<p className="randomchar__descr">{description}</p>
