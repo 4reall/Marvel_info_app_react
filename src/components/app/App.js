@@ -10,9 +10,9 @@ const App = () => {
 				<AppHeader />
 				<main>
 					<Routes>
-						<Route end path={'/'} element={<MainPage />} />
-						<Route end path={'/comics'} element={<ComicsPage />} />
-						<Route end path={'/comics/:comicId'} element={<SingleComicPage />} />
+						<Route end path={'/Marvel_react_app/'} element={<MainPage />} />
+						<Route end path={'/Marvel_react_app/comics'} element={<ComicsPage />} />
+						<Route end path={'/Marvel_react_app/comics/:comicId'} element={<SingleComicPage />} />
 						<Route path={'*'} element={<Page404 />} />
 					</Routes>
 				</main>
