@@ -71,9 +71,11 @@ const View = ({ char }) => {
 			<div className="char__comics">Comics:</div>
 			<ul className="char__comics-list">
 				{comicsItems.map((item, i) => {
+					const comicId = item.resourceURI ? item.resourceURI.match(/\d{3,}/) : null;
+					const disabled = !comicId ? { pointerEvents: 'none' } : null;
 					return (
-						<li key={i} className="char__comics-item">
-							<Link to={`comics/${item.resourceURI.match(/\d{3,}/)}`}>{item.name}</Link>
+						<li style={disabled} key={i} className="char__comics-item">
+							<Link to={`comics/${comicId}`}>{item.name}</Link>
 						</li>
 					);
 				})}

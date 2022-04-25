@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import PropTypes from 'prop-types';
 
 import List from './List';
@@ -17,16 +18,7 @@ const CharList = (props) => {
 
 	const { loading, error, getAllCharacters } = useMarvelServices();
 
-	// useEffect(() => {
-	// 	if (fetching) {
-	// 		onRequest(offset, initial);
-	// 		setFetching(false);
-	// 		setInitial(false);
-	// 	}
-	// }, [fetching]);
-
 	useEffect(() => {
-		// setFetching(true);
 		onRequest(offset, true);
 	}, []);
 
@@ -48,15 +40,18 @@ const CharList = (props) => {
 		setCharsEnded(ended);
 	};
 
-	const errorMessage = error ? <ErrorMessage /> : null;
+	const errorMessage = error && !newItemLoading ? <ErrorMessage /> : null;
 	const spinner = loading && !newItemLoading ? <Spinner /> : null;
-	const content = !(spinner || errorMessage) ? <List arr={charList} onCharSelected={props.onCharSelected} /> : null;
+	// const content = !(spinner || errorMessage) ? (
+	// 	<List arr={charList} onCharSelected={props.onCharSelected} />
+	// ) : null;
 
 	return (
 		<div className="char__list">
 			{errorMessage}
 			{spinner}
-			{content}
+			<List arr={charList} onCharSelected={props.onCharSelected} />
+			{/*{content}*/}
 			<div className="char__buttons">
 				<button
 					onClick={() => {
@@ -64,7 +59,8 @@ const CharList = (props) => {
 					}}
 					disabled={newItemLoading}
 					style={{ display: `${charsEnded ? 'none' : 'block'}` }}
-					className="button button__main button__long">
+					className="button button__main button__long"
+				>
 					<div className="inner">Next page</div>
 				</button>
 			</div>

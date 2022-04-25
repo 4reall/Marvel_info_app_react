@@ -8,7 +8,9 @@ export const useMarvelServices = () => {
 	const { error, loading, request, clearError } = useHttp();
 
 	const getAllCharacters = async (offset = _baseCharOffset) => {
-		const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
+		const res = await request(
+			`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`
+		);
 		return res.data.results.map(_transformCharacter);
 	};
 
@@ -17,8 +19,17 @@ export const useMarvelServices = () => {
 		return _transformCharacter(res.data.results[0]);
 	};
 
+	const getCharacterByName = async (name) => {
+		const res = await request(
+			`${_apiBase}characters?name=${name}&${_apiKey}`
+		);
+		return res.data.results.map(_transformCharacter);
+	};
+
 	const getAllComics = async (offset = _baseCharOffset) => {
-		const res = await request(`${_apiBase}comics?limit=8&offset=${offset}&${_apiKey}`);
+		const res = await request(
+			`${_apiBase}comics?limit=8&offset=${offset}&${_apiKey}`
+		);
 		return res.data.results.map(_transformComic);
 	};
 
@@ -27,14 +38,9 @@ export const useMarvelServices = () => {
 		return _transformComic(res.data.results[0]);
 	};
 
-	const _transformCharacter = (char) => {
-		const descr = (str, length) => {
-			if (str) return str.substr(0, length) + '... CLICK ON WIKI TO SEE FULL DESCRIPTION';
-			else return 'There is no description for this character';
-		};
-
+	const _transformCharacter = (char, fullDescr = 150) => {
 		const comicsItems = (arr, length) => {
-			if (arr.length) return arr.splice(length);
+			if (arr.length) return arr.splice(0, length);
 			else return [{ name: 'This character does not have comics' }];
 		};
 
@@ -42,7 +48,11 @@ export const useMarvelServices = () => {
 			id: char.id,
 			thumbnail: `${char.thumbnail.path}.${char.thumbnail.extension}`,
 			name: char.name,
-			description: descr(char.description, 150),
+			description: char.description
+				? fullDescr
+					? char.description
+					: char.description.slice(0, 220)
+				: 'There is no description for this character',
 			homepage: char.urls[0].url,
 			wiki: char.urls[1].url,
 			comicsItems: comicsItems(char.comics.items, 10),
@@ -54,12 +64,24 @@ export const useMarvelServices = () => {
 			id: comics.id,
 			thumbnail: `${comics.thumbnail.path}.${comics.thumbnail.extension}`,
 			title: comics.title,
-			description: comics.description || 'There is no description for this comic',
+			description:
+				comics.description || 'There is no description for this comic',
 			price: comics.prices[0].price + '$',
 			language: comics.textObjects.language || 'en-us',
-			pages: comics.pageCount ? `${comics.pageCount} pages` : 'No information about the number of pages',
+			pages: comics.pageCount
+				? `${comics.pageCount} pages`
+				: 'No information about the number of pages',
 		};
 	};
 
-	return { loading, error, getAllCharacters, getCharacter, getAllComics, getComic, clearError };
+	return {
+		loading,
+		error,
+		getAllCharacters,
+		getCharacter,
+		getAllComics,
+		getComic,
+		clearError,
+		getCharacterByName,
+	};
 };
