@@ -5,8 +5,10 @@ import { lazy, Suspense } from 'react';
 import AppHeader from '../appHeader/AppHeader';
 import Spinner from '../spinner/Spinner';
 
+import paths from '../../pages/pathes';
+
 const Page404 = lazy(() => import('../../pages/404'));
-const ComicsPage = lazy(() => import('../../pages/ComicsPage'));
+const ComicPage = lazy(() => import('../../pages/ComicsPage'));
 const MainPage = lazy(() => import('../../pages/MainPage'));
 const SingleComicLayout = lazy(() =>
 	import('../../pages/singleComicLayout/SingleComicLayout')
@@ -26,17 +28,17 @@ const App = () => {
 						<Routes>
 							<Route
 								end
-								path={'/Marvel_react_app/'}
+								path={paths.mainPage}
 								element={<MainPage />}
 							/>
 							<Route
 								end
-								path={'/Marvel_react_app/comics'}
-								element={<ComicsPage />}
+								path={paths.comicPage}
+								element={<ComicPage />}
 							/>
 							<Route
 								end
-								path={'/Marvel_react_app/comics/:id'}
+								path={`${paths.singleComicPage}:id`}
 								element={
 									<SinglePage
 										Component={SingleComicLayout}
@@ -46,7 +48,7 @@ const App = () => {
 							/>
 							<Route
 								end
-								path={'/Marvel_react_app/character/:id'}
+								path={`${paths.characterPage}:id`}
 								element={
 									<SinglePage
 										Component={SingleCharLayout}

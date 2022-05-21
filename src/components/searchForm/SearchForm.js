@@ -11,6 +11,7 @@ import { useMarvelServices } from '../../services/marvelServices';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ErrorMessage from '../errorMessage/ErrorMessage';
+import paths from '../../pages/pathes';
 
 const SearchForm = () => {
 	const [char, setChar] = useState(null);
@@ -33,7 +34,7 @@ const SearchForm = () => {
 				There is! {char[0].name} has been found
 			</div>
 			<Link
-				to={`/Marvel_react_app/character/${char[0].id}`}
+				to={`${paths.characterPage}${char[0].id}`}
 				className={'button  button__main'}
 			>
 				<div className="inner">TO PAGE</div>

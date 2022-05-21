@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
+import paths from '../../pages/pathes';
+
 import './comicsList.scss';
 
 const ComicItem = ({ comicList }) => {
@@ -8,7 +10,7 @@ const ComicItem = ({ comicList }) => {
 		return (
 			<CSSTransition key={i} timeout={500} classNames="comics__item">
 				<li className="comics__item">
-					<Link to={`/Marvel_react_app/comics/${comic.id}`}>
+					<Link to={`${paths.comicPage}${comic.id}`}>
 						<img
 							src={comic.thumbnail}
 							alt="ultimate war"
