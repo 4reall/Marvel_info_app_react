@@ -1,18 +1,25 @@
 {
-	"name": "marvel-info-app",
+	"homepage": "https://4reall.github.io/Marvel_info_app_react",
+	"name": "marvel_info_app_react",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
 		"@testing-library/jest-dom": "^5.16.4",
 		"@testing-library/react": "^13.0.1",
 		"@testing-library/user-event": "^13.5.0",
+		"formik": "^2.2.9",
 		"prop-types": "^15.8.1",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
+		"react-router-dom": "^6.3.0",
 		"react-scripts": "5.0.1",
-		"web-vitals": "^2.1.4"
+		"react-transition-group": "^4.4.2",
+		"web-vitals": "^2.1.4",
+		"yup": "^0.32.11"
 	},
 	"scripts": {
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d build",
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
@@ -37,6 +44,7 @@
 		]
 	},
 	"devDependencies": {
+		"gh-pages": "^3.2.3",
 		"sass": "^1.50.0"
 	}
 }

@@ -1,3 +1,4 @@
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { useRef } from 'react';
 
 const List = ({ arr, onCharSelected }) => {
@@ -9,29 +10,42 @@ const List = ({ arr, onCharSelected }) => {
 		arr[i].focus();
 	};
 	const items = arr.map((item, i) => {
-		const imgNotAvailabe = item.thumbnail.match('image_not_available.jpg') ? { objectFit: 'contain' } : null;
+		const imgNotAvailabe = item.thumbnail.match('image_not_available.jpg')
+			? { objectFit: 'contain' }
+			: null;
 		return (
-			<li
-				className="char__item"
-				tabIndex={0}
-				ref={(e) => (focusRefs.current[i] = e)}
-				key={item.id}
-				onClick={() => {
-					onCharSelected(item.id);
-					onItemFocus(focusRefs.current, i);
-				}}
-				onKeyPress={(e) => {
-					if (e.key === ' ' || e.key === 'Enter') {
+			<CSSTransition key={item.id} timeout={500} classNames="char__item">
+				<li
+					className="char__item"
+					tabIndex={0}
+					ref={(e) => (focusRefs.current[i] = e)}
+					key={item.id}
+					onClick={() => {
 						onCharSelected(item.id);
 						onItemFocus(focusRefs.current, i);
-					}
-				}}>
-				<img src={item.thumbnail} alt="Character's name" style={imgNotAvailabe} />
-				<div className="char__name">{item.name}</div>
-			</li>
+					}}
+					onKeyDown={(e) => {
+						if (e.key === ' ' || e.key === 'Enter') {
+							onCharSelected(item.id);
+							onItemFocus(focusRefs.current, i);
+						}
+					}}
+				>
+					<img
+						src={item.thumbnail}
+						alt="Character's name"
+						style={imgNotAvailabe}
+					/>
+					<div className="char__name">{item.name}</div>
+				</li>
+			</CSSTransition>
 		);
 	});
-	return <ul className="char__grid">{items}</ul>;
+	return (
+		<ul className="char__grid">
+			<TransitionGroup component={null}>{items}</TransitionGroup>
+		</ul>
+	);
 };
 
 export default List;
