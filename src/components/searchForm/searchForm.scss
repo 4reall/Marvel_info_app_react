@@ -24,10 +24,14 @@
     }
     &-succeed {
       color: #03710E;
+      font-size: 1.15rem;
+      font-weight: bold;
     }
     &-error {
-      margin-top: 0.5rem;
+      margin-top: 1.125rem;
       color: $main-color;
+      font-weight: bold;
+
     }
   }
 }

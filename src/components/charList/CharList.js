@@ -14,9 +14,9 @@ const CharList = (props) => {
 	const [newItemLoading, setNewItemLoading] = useState(false);
 	const [offset, setOffset] = useState(210);
 	const [charsEnded, setCharsEnded] = useState(false);
-	const [fetching, setFetching] = useState(false);
 
-	const { loading, error, getAllCharacters } = useMarvelServices();
+	const { loading, error, getAllCharacters, clearError } =
+		useMarvelServices();
 
 	useEffect(() => {
 		onRequest(offset, true);
@@ -28,11 +28,8 @@ const CharList = (props) => {
 	};
 
 	const onCharListLoaded = (newCharList) => {
-		let ended = false;
-
-		if (newCharList.length < 9) {
-			ended = true;
-		}
+		clearError();
+		const ended = newCharList.length < 9;
 
 		setCharList((charList) => [...charList, ...newCharList]);
 		setNewItemLoading(false);
@@ -57,7 +54,7 @@ const CharList = (props) => {
 					onClick={() => {
 						onRequest(offset);
 					}}
-					disabled={newItemLoading}
+					disabled={error ? true : newItemLoading}
 					style={{ display: `${charsEnded ? 'none' : 'block'}` }}
 					className="button button__main button__long"
 				>

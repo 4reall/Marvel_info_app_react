@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 
 import './searchForm.scss';
 import { useMarvelServices } from '../../services/marvelServices';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
@@ -61,6 +61,7 @@ const SearchForm = () => {
 					</label>
 					<div className="char__search-wrapper">
 						<Field
+							id="charName"
 							name="charName"
 							type="text"
 							placeholder="Enter name"
